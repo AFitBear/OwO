@@ -38,14 +38,14 @@ namespace OwO {
             Size size = new(lowerRight.X - upperLeft.X, lowerRight.Y - upperLeft.Y + 1);
             Bitmap bmp = new Bitmap(size.Width, size.Height);
             Graphics g = Graphics.FromImage(bmp);
-            g.CopyFromScreen(upperLeft, lowerRight, size);
+            g.CopyFromScreen(upperLeft, new(0,0), size);
 
             tiles = new TileState[gridSize][];
             for (int i = 0; i < gridSize; i++) {
                 tiles[i] = new TileState[gridSize];
                 for (int j = 0; j < gridSize; j++) {
                     Color color = bmp.GetPixel(positions[i][j].X - upperLeft.X, positions[i][j].Y - upperLeft.Y);
-                    if (color.B >= 200) tiles[i][j] = TileState.blue;
+                    if (color.B >= 180) tiles[i][j] = TileState.blue;
                     else if (color.G >= 200) tiles[i][j] = TileState.yellow;
                     else tiles[i][j] = TileState.empty;
                 }
