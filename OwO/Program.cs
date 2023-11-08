@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.IO;
 using WindowsInput;
 
 namespace OwO {
@@ -10,7 +9,7 @@ namespace OwO {
         blue,
     }
     internal class Program {
-        public static Point[][] positions; //where all the tiles are
+        public static Point[][] positions; //where all the tiles are. the cordinates on the screen
         public static TileState[][] tiles; //Enum to see if tiles are yellow, blue or emty. find by using double array
         public static Point upperLeft = new Point(670, 268); //upper left of the game screen. in the middle
         public static Point lowerRight = new Point(1255, 851);
@@ -21,12 +20,12 @@ namespace OwO {
             Console.ReadLine();
             ComputePositions(12);
             ReadScreen();
-
-
+            StartLogo();
+            
+            Console.WriteLine("Press Enter");
             Console.ReadLine();
-            Point edd = new Point(500,500);
-            ClickYellow(edd);
 
+            Print();
         }
         static void ComputePositions(int gridSize) {
             int unitLength = (int)((lowerRight.X - upperLeft.X) / (gridSize - 1)); //unit length is the distance between each box.
@@ -63,38 +62,61 @@ namespace OwO {
 
 
         }
-        static void Print() {
-            for (int i = 0;i < gridSize;i++) {
-                for (int j = 0;j < gridSize;j++) {
-
-                    if (tiles[i][j]=TileState.blue) {
-
+        static void StartLogo() {
+            bool isNotDone=true;
+            while (isNotDone){
+                isNotDone = false;
+                for (int i = 0; i < gridSize; i++) {
+                    for (int j = 0 ; j < gridSize; j++) {
+                        if (tiles[i][j] == tiles[i + 2][j]){
+                            isNotDone=true;
+                            tiles[i+1][j] = tiles[i][j];
+                        }
                     }
+                }
+                
+               
+            }
 
+
+
+        }
+        static void Gabi(int i, int j) {
+            if (i < gridSize - 2) {
+
+            }
+        }
+
+
+        static void Print() {
+            for (int i = 0; i < gridSize; i++) {
+                for (int j = 0; j < gridSize; j++) {
+
+                    if (tiles[i][j] == TileState.blue) {
+                        BlueClick(positions[i][j]);
+                    }
+                    if (tiles[i][j] == TileState.yellow) {
+                        YellowClick(positions[i][j]);
+                    }
                 }
             }
         }
-        static void ClickYellow(Point point) {
+        static void YellowClick(Point point) {
             point = Scalluing(point);
             simulator.Mouse.MoveMouseTo(point.X, point.Y);
             simulator.Mouse.LeftButtonClick();
-            tiles[point.X][point.Y]=TileState.yellow;
         }
-        static void Check3rule() {
+        /*static void Check3rule() {
             for (int i = 0;i < 3;i++) {
                 tiles[1][1] = TileState.blue;
                 simulator.Mouse.MoveMouseTo(positions[i][j]);
                 simulator.Mouse.RightButtonClick();
             }
-        }
-        static void ChangeToBlue(int i, int j) {
-
-        }
+        }*/
 
         static void BlueClick(Point point) {
-            tiles[1][1] = TileState.blue;
             point = Scalluing(point);
-            simulator.Mouse.MoveMouseTo(positions[1][1].X, positions[1][1].Y);
+            simulator.Mouse.MoveMouseTo(point.X, point.Y);
             simulator.Mouse.RightButtonClick();
         }
         static Point Scalluing(Point point) {
