@@ -123,7 +123,7 @@ namespace OwO {
             bool haveDone = false;
             if (i + 1 < gridSize) {
                 if (tiles[i][j] == tiles[i + 1][j] && tiles[i][j] != TileState.empty) {
-                    if (i + 2 < gridSize && tiles[i + 2][j] != TileState.empty) {
+                    if (i + 2 < gridSize && tiles[i + 2][j] == TileState.empty) {
                         haveDone = true;
 
                         switch (tiles[i][j]) {
@@ -138,15 +138,15 @@ namespace OwO {
                                 break;
                         }
                     }
-                    if (i > 0 && tiles[i -1][j] != TileState.empty) {
+                    if (i > 0 && tiles[i - 1][j] == TileState.empty) {
                         haveDone = true;
 
-                        switch (tiles[i-1][j]) {
+                        switch (tiles[i][j]) {
                             case TileState.yellow:
-                                tiles[i-1][j] = TileState.blue;
+                                tiles[i - 1][j] = TileState.blue;
                                 break;
                             case TileState.blue:
-                                tiles[i-1][j] = TileState.yellow;
+                                tiles[i - 1][j] = TileState.yellow;
                                 break;
                             default:
                                 Console.WriteLine("something wrong in Eren -1");
@@ -155,24 +155,40 @@ namespace OwO {
                     }
                 }
             }
-            if (j > 0) {
-                if (tiles[i][j] == tiles[i][j + 2] && tiles[i][j] != TileState.empty && tiles[i][j + 1] == TileState.empty) {
-                    haveDone = true;
-                    switch (tiles[i][j]) {
-                        case TileState.yellow:
-                            tiles[i][j - 1] = TileState.blue;
-                            break;
-                        case TileState.blue:
-                            tiles[i][j - 1] = TileState.yellow;
-                            break;
-                        default:
-                            Console.WriteLine("something wrong in Eren -1");
-                            break;
+            if (j + 1 < gridSize) {
+                if (tiles[i][j] == tiles[i][j + 1] && tiles[i][j] != TileState.empty) {
+                    if (j + 2 < gridSize && tiles[i][j + 2] == TileState.empty) { //kigger ned ad
+                        haveDone = true;
+
+                        switch (tiles[i][j]) {
+                            case TileState.yellow:
+                                tiles[i][j + 2] = TileState.blue;
+                                break;
+                            case TileState.blue:
+                                tiles[i][j + 2] = TileState.yellow;
+                                break;
+                            default:
+                                Console.WriteLine("something wrong in Eren +2");
+                                break;
+                        }
+                    }
+                    if (j > 0 && tiles[i][j-1] == TileState.empty) { //kigger op ad
+                        haveDone = true;
+
+                        switch (tiles[i][j]) {
+                            case TileState.yellow:
+                                tiles[i][j - 1] = TileState.blue;
+                                break;
+                            case TileState.blue:
+                                tiles[i][j - 1] = TileState.yellow;
+                                break;
+                            default:
+                                Console.WriteLine("something wrong in Eren -1");
+                                break;
+                        }
                     }
                 }
             }
-
-
             return haveDone;
         }//Dobbel thing makes both sides the oppesite thing
 
