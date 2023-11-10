@@ -20,8 +20,11 @@ namespace OwO {
             Console.ReadLine();
             ComputePositions(12);
             ReadScreen();
+
+            Console.WriteLine("Press Enter");
+            Console.ReadLine();
             StartLogo();
-            
+
             Console.WriteLine("Press Enter");
             Console.ReadLine();
 
@@ -63,30 +66,115 @@ namespace OwO {
 
         }
         static void StartLogo() {
-            bool isNotDone=true;
-            while (isNotDone){
+            bool isNotDone = true;
+            while (isNotDone) {
                 isNotDone = false;
                 for (int i = 0; i < gridSize; i++) {
-                    for (int j = 0 ; j < gridSize; j++) {
-                        if (tiles[i][j] == tiles[i + 2][j]){
-                            isNotDone=true;
-                            tiles[i+1][j] = tiles[i][j];
+                    for (int j = 0; j < gridSize; j++) {
+                        if (Gabi(i, j)) {
+                            isNotDone = true;
+                        }
+                        if (ErenYaeger(i, j)) {
+                            isNotDone = true;
                         }
                     }
                 }
-                
-               
             }
 
 
-
         }
-        static void Gabi(int i, int j) {
-            if (i < gridSize - 2) {
-
+        static bool Gabi(int i, int j) {
+            bool haveDone = false;
+            if (i + 2 < gridSize) {
+                if (tiles[i][j] == tiles[i + 2][j] && tiles[i][j] != TileState.empty && tiles[i + 1][j] == TileState.empty) {
+                    haveDone = true;
+                    switch (tiles[i][j]) {
+                        case TileState.yellow:
+                            tiles[i + 1][j] = TileState.blue;
+                            break;
+                        case TileState.blue:
+                            tiles[i + 1][j] = TileState.yellow;
+                            break;
+                        default:
+                            Console.WriteLine("something wrong in Gabi");
+                            break;
+                    }
+                }
             }
-        }
+            if (j + 2 < gridSize) {
+                if (tiles[i][j] == tiles[i][j + 2] && tiles[i][j] != TileState.empty && tiles[i][j + 1] == TileState.empty) {
+                    haveDone = true;
+                    switch (tiles[i][j]) {
+                        case TileState.yellow:
+                            tiles[i][j + 1] = TileState.blue;
+                            break;
+                        case TileState.blue:
+                            tiles[i][j + 1] = TileState.yellow;
+                            break;
+                        default:
+                            Console.WriteLine("something wrong in Gabi");
+                            break;
+                    }
+                }
+            }
+            return haveDone;
+        }//leave it be. it should be done. Gabi from attack the titens. head go "pow!"
+        static bool ErenYaeger(int i, int j) {
+            bool haveDone = false;
+            if (i + 1 < gridSize) {
+                if (tiles[i][j] == tiles[i + 1][j] && tiles[i][j] != TileState.empty) {
+                    if (i + 2 < gridSize && tiles[i + 2][j] != TileState.empty) {
+                        haveDone = true;
 
+                        switch (tiles[i][j]) {
+                            case TileState.yellow:
+                                tiles[i + 2][j] = TileState.blue;
+                                break;
+                            case TileState.blue:
+                                tiles[i + 2][j] = TileState.yellow;
+                                break;
+                            default:
+                                Console.WriteLine("something wrong in Eren +2");
+                                break;
+                        }
+                    }
+                    if (i > 0 && tiles[i -1][j] != TileState.empty) {
+                        haveDone = true;
+
+                        switch (tiles[i-1][j]) {
+                            case TileState.yellow:
+                                tiles[i-1][j] = TileState.blue;
+                                break;
+                            case TileState.blue:
+                                tiles[i-1][j] = TileState.yellow;
+                                break;
+                            default:
+                                Console.WriteLine("something wrong in Eren -1");
+                                break;
+                        }
+                    }
+                }
+            }
+            if (j > 0) {
+                if (tiles[i][j] == tiles[i][j + 2] && tiles[i][j] != TileState.empty && tiles[i][j + 1] == TileState.empty) {
+                    haveDone = true;
+                    switch (tiles[i][j]) {
+                        case TileState.yellow:
+                            tiles[i][j - 1] = TileState.blue;
+                            break;
+                        case TileState.blue:
+                            tiles[i][j - 1] = TileState.yellow;
+                            break;
+                        default:
+                            Console.WriteLine("something wrong in Eren -1");
+                            break;
+                    }
+                }
+            }
+
+
+            return haveDone;
+        }//Dobbel thing makes both sides the oppesite thing
 
         static void Print() {
             for (int i = 0; i < gridSize; i++) {
@@ -106,14 +194,6 @@ namespace OwO {
             simulator.Mouse.MoveMouseTo(point.X, point.Y);
             simulator.Mouse.LeftButtonClick();
         }
-        /*static void Check3rule() {
-            for (int i = 0;i < 3;i++) {
-                tiles[1][1] = TileState.blue;
-                simulator.Mouse.MoveMouseTo(positions[i][j]);
-                simulator.Mouse.RightButtonClick();
-            }
-        }*/
-
         static void BlueClick(Point point) {
             point = Scalluing(point);
             simulator.Mouse.MoveMouseTo(point.X, point.Y);
